@@ -2,11 +2,22 @@
 #include <fstream>
 using namespace std;
 
+// ===== COLOR CODES =====
+const string RESET  = "\033[0m";
+const string RED    = "\033[31m";
+const string GREEN  = "\033[32m";
+const string YELLOW = "\033[33m";
+const string BLUE   = "\033[34m";
+const string CYAN   = "\033[36m";
+const string BOLD   = "\033[1m";
+
+// ===== GAME DATA =====
 char board[3][3];
 int scoreX = 0;
 int scoreO = 0;
 int scoreDraw = 0;
 
+// ===== FILE SAVE / LOAD =====
 void saveScore() {
     ofstream file("score.txt");
     if (file.is_open()) {
@@ -27,6 +38,7 @@ void loadScore() {
     }
 }
 
+// ===== BOARD FUNCTIONS =====
 void resetBoard() {
     char num = '1';
     for (int i = 0; i < 3; i++) {
@@ -46,6 +58,7 @@ void displayBoard() {
     cout << "\n";
 }
 
+// ===== WIN / DRAW CHECK =====
 bool checkWin() {
     for (int i = 0; i < 3; i++) {
         if (board[i][0] == board[i][1] && board[i][1] == board[i][2]) return true;
@@ -65,6 +78,7 @@ bool isDraw() {
     return true;
 }
 
+// ===== PLAYER MOVE =====
 void makeMove(char player) {
     int choice;
     cout << "Player " << player << ", enter a number (1-9): ";
@@ -81,12 +95,16 @@ void makeMove(char player) {
     }
 }
 
+// ===== COLORED SCOREBOARD =====
 void displayScore() {
-    cout << "\n===== SCOREBOARD =====\n";
-    cout << "Player X Wins: " << scoreX << endl;
-    cout << "Player O Wins: " << scoreO << endl;
-    cout << "Draws: " << scoreDraw << endl;
-    cout << "=======================\n\n";
+    cout << "\n"
+         << RED << BOLD << "===== SCOREBOARD =====" << RESET << "\n";
+
+    cout << BLUE   << "Player X Wins: " << scoreX << RESET << "\n";
+    cout << GREEN  << "Player O Wins: " << scoreO << RESET << "\n";
+    cout << YELLOW << "Draws: "        << scoreDraw << RESET << "\n";
+
+    cout << RED << "=======================\n" << RESET << "\n";
 }
 
 void resetScore() {
@@ -95,6 +113,7 @@ void resetScore() {
     cout << "\nScoreboard reset!\n\n";
 }
 
+// ===== GAME LOOP =====
 void playGame() {
     char currentPlayer = 'X';
     resetBoard();
@@ -126,11 +145,12 @@ void playGame() {
     }
 }
 
+// ===== MAIN MENU =====
 void mainMenu() {
     int choice;
 
     while (true) {
-        cout << "====== TIC TAC TOE ======\n";
+        cout << CYAN << BOLD << "====== TIC TAC TOE ======" << RESET << "\n";
         cout << "1. Play Game\n";
         cout << "2. View Scoreboard\n";
         cout << "3. Reset Scoreboard\n";
@@ -139,15 +159,9 @@ void mainMenu() {
         cin >> choice;
 
         switch (choice) {
-            case 1:
-                playGame();
-                break;
-            case 2:
-                displayScore();
-                break;
-            case 3:
-                resetScore();
-                break;
+            case 1: playGame(); break;
+            case 2: displayScore(); break;
+            case 3: resetScore(); break;
             case 4:
                 cout << "Goodbye!\n";
                 return;
@@ -157,6 +171,7 @@ void mainMenu() {
     }
 }
 
+// ===== MAIN =====
 int main() {
     loadScore();
     mainMenu();
